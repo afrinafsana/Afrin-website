@@ -73,4 +73,13 @@ def home():
 
 if __name__ == '__main__':
     app.run()
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Afrin’s World</title>
+    </head>
+<body>
+    <h1>Hello Afrin — Your Website is Live 💫</h1>
+</body>
+</html>
 
