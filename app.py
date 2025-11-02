@@ -63,8 +63,6 @@ def home():
 
         <div class="card">
             <h2>📩 Contact Me</h2>
-            <p>Email: <b>afrinafsana@example.com</b></p>
-        </div>
 
         <div class="footer">
             <p>Made with ❤️ by Afrin Afsana</p>
