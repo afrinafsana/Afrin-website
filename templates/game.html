@@ -1,0 +1,245 @@
+<!-- File: templates/game.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quick Tap — Afrin's Game</title>
+  <style>
+    :root{
+      --bg:#071021; --card:#0f1724; --accent:#ff66cc; --muted:#aab3c7;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      background:linear-gradient(180deg,#071021 0%, #0b1220 60%);
+      color:#fff;
+      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    }
+
+    .wrap{width:100%;max-width:720px}
+    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+    header h1{font-size:20px;margin:0;color:var(--accent)}
+    header a{color:var(--muted);text-decoration:none;font-size:14px}
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      padding:18px;border-radius:14px;
+      box-shadow:0 10px 30px rgba(2,6,23,0.6);
+    }
+
+    .game-top{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .score-box{display:flex;gap:10px;align-items:center}
+    .score{font-weight:700;font-size:18px;color:#fff}
+    .time{font-size:14px;color:var(--muted)}
+
+    .play-area{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(80px,1fr));
+      gap:12px;margin-top:12px;
+    }
+
+    .tile{
+      background:linear-gradient(180deg,#0f1724,#0b1220);
+      height:80px;border-radius:10px;display:flex;align-items:center;
+      justify-content:center;font-size:22px;color:transparent;cursor:pointer;
+      user-select:none;border:1px solid rgba(255,255,255,0.03);
+      transition:transform .15s ease, box-shadow .15s ease, color .12s;
+    }
+    .tile.revealed{color:#fff;background:linear-gradient(90deg,var(--accent),#ff8c00);box-shadow:0 12px 30px rgba(255,102,204,0.08);transform:translateY(-6px)}
+    .tile.matched{background:rgba(0,0,0,0.12);color:rgba(255,255,255,0.65);opacity:.85;cursor:default;transform:none}
+
+    .controls{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+    button{
+      background:var(--accent);border:none;color:#0b0b0b;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;
+    }
+    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+    .footer{margin-top:14px;color:var(--muted);font-size:13px;text-align:center}
+
+    @media(max-width:420px){
+      .tile{height:66px;font-size:18px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Quick Tap — Match & Win</h1>
+      <a href="/motivation">← Back</a>
+    </header>
+
+    <div class="card">
+      <div class="game-top">
+        <div class="score-box">
+          <div class="score" id="score">Score: 0</div>
+          <div class="time" id="timer">Time: 30s</div>
+        </div>
+        <div>
+          <button id="startBtn">Start Game</button>
+          <button id="resetBtn" class="ghost">Reset</button>
+        </div>
+      </div>
+
+      <div id="message" style="text-align:center;color:var(--muted);margin-bottom:8px">Press Start — find matching pairs fast!</div>
+
+      <div class="play-area" id="board" aria-live="polite">
+        <!-- tiles injected here -->
+      </div>
+
+      <div class="controls">
+        <button id="easy">Easy</button>
+        <button id="medium" class="ghost">Medium</button>
+        <button id="hard" class="ghost">Hard</button>
+      </div>
+
+      <div class="footer">Tip: Share your best score and bring friends — more players = more fun ✨</div>
+    </div>
+  </div>
+
+  <script>
+    // Simple Memory Matching Game
+    const board = document.getElementById('board');
+    const scoreEl = document.getElementById('score');
+    const timerEl = document.getElementById('timer');
+    const message = document.getElementById('message');
+    const startBtn = document.getElementById('startBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const difficultyBtns = { easy: document.getElementById('easy'), medium: document.getElementById('medium'), hard: document.getElementById('hard') };
+
+    let icons = ['★','✦','❤','⚡','☀','☘','♕','♪','✿','✪','❖','⚑'];
+    let tiles = [];
+    let first = null, second = null;
+    let matched = 0;
+    let score = 0;
+    let timeLeft = 30;
+    let timerInterval = null;
+    let active = false;
+    let level = 'easy';
+
+    function setDifficulty(l){
+      level = l;
+      // UI highlight
+      Object.keys(difficultyBtns).forEach(k=> difficultyBtns[k].classList.toggle('ghost', k!==l));
+    }
+
+    function buildBoard(){
+      board.innerHTML='';
+      let countPairs = level === 'easy' ? 6 : (level === 'medium' ? 8 : 10);
+      let chosen = icons.slice(0, countPairs);
+      let pairs = chosen.concat(chosen);
+      // shuffle
+      pairs = pairs.sort(()=>Math.random()-0.5);
+      pairs.forEach((v,i)=>{
+        const el = document.createElement('div');
+        el.className='tile';
+        el.dataset.value=v;
+        el.dataset.index=i;
+        el.textContent = v;
+        // hide symbol visually
+        el.style.color='transparent';
+        el.addEventListener('click', onTileClick);
+        board.appendChild(el);
+      });
+      tiles = Array.from(document.querySelectorAll('.tile'));
+    }
+
+    function onTileClick(e){
+      if(!active) return;
+      const el = e.currentTarget;
+      if(el.classList.contains('revealed') || el.classList.contains('matched')) return;
+      reveal(el);
+      if(!first) first = el;
+      else if(!second && el !== first){ second = el; checkMatch(); }
+    }
+
+    function reveal(el){
+      el.classList.add('revealed');
+      el.style.color=''; // show color
+    }
+
+    function hide(el){
+      el.classList.remove('revealed');
+      el.style.color='transparent';
+    }
+
+    function lockMatched(a,b){
+      a.classList.add('matched'); b.classList.add('matched');
+      a.style.color=''; b.style.color='';
+    }
+
+    function checkMatch(){
+      if(!first || !second) return;
+      if(first.dataset.value === second.dataset.value){
+        lockMatched(first, second);
+        matched += 2;
+        score += 10;
+        scoreEl.textContent = 'Score: ' + score;
+        first = second = null;
+        if(matched === tiles.length){
+          finish(true);
+        }
+      } else {
+        active = false;
+        setTimeout(()=>{
+          hide(first); hide(second);
+          first = second = null;
+          active = true;
+        }, 700);
+      }
+    }
+
+    function startTimer(){
+      clearInterval(timerInterval);
+      timeLeft = level === 'easy' ? 45 : (level === 'medium' ? 35 : 25);
+      timerEl.textContent = 'Time: ' + timeLeft + 's';
+      timerInterval = setInterval(()=>{
+        timeLeft--;
+        timerEl.textContent = 'Time: ' + timeLeft + 's';
+        if(timeLeft <= 0){ clearInterval(timerInterval); finish(false); }
+      }, 1000);
+    }
+
+    function finish(won){
+      active = false;
+      clearInterval(timerInterval);
+      if(won){
+        message.textContent = '🔥 You matched all pairs! Score: ' + score;
+      } else {
+        message.textContent = '⏱️ Time up! Score: ' + score;
+      }
+    }
+
+    function resetGame(){
+      clearInterval(timerInterval);
+      first = second = null; matched = 0; score = 0;
+      scoreEl.textContent = 'Score: 0';
+      timerEl.textContent = 'Time: 0s';
+      message.textContent = 'Press Start — find matching pairs fast!';
+      active = false;
+      buildBoard();
+    }
+
+    startBtn.addEventListener('click', ()=>{
+      resetGame();
+      active = true;
+      startTimer();
+      message.textContent = 'Game started — find pairs!';
+    });
+
+    resetBtn.addEventListener('click', resetGame);
+    difficultyBtns.easy.addEventListener('click', ()=>{ setDifficulty('easy'); resetGame(); });
+    difficultyBtns.medium.addEventListener('click', ()=>{ setDifficulty('medium'); resetGame(); });
+    difficultyBtns.hard.addEventListener('click', ()=>{ setDifficulty('hard'); resetGame(); });
+
+    // initialize
+    setDifficulty('easy');
+    buildBoard();
+  </script>
+</body>
+</html>
