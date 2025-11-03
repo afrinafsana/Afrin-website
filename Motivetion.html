@@ -1,178 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Daily Dose — Motivation | Afrin</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Motivation | Afrin Afsana</title>
   <style>
-    :root{
-      --bg:#0f1724; --card:#0b1220; --accent:#ff66cc; --text:#f4f7fb;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:Inter, Poppins, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background:linear-gradient(135deg,#071026 0%, #0b1220 50%, #0f1724 100%);
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-    }
-    header{
-      padding:28px 18px;
-      text-align:center;
-      border-bottom:1px solid rgba(255,255,255,0.03);
-    }
-    header h1{margin:0;font-size:24px;letter-spacing:0.4px}
-    header p{margin:6px 0 0;color:rgba(255,255,255,0.6);font-size:14px}
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;900&display=swap');
 
-    .container{max-width:980px;margin:28px auto;padding:0 16px;}
-    .hero{
-      background: linear-gradient(180deg, rgba(255,102,204,0.06), rgba(255,102,204,0.02));
-      border:1px solid rgba(255,102,204,0.06);
-      padding:18px;border-radius:12px;
-      display:flex;gap:16px;align-items:center;
-      box-shadow: 0 6px 24px rgba(8,12,20,0.6);
-    }
-    .left{flex:1}
-    .left h2{margin:0;font-size:20px;color:var(--accent)}
-    .left p{margin:8px 0 0;color:rgba(255,255,255,0.8)}
-
-    .controls{display:flex;gap:8px;align-items:center}
-    button{
-      background:var(--accent);border:none;color:#0b0b0b;padding:10px 14px;border-radius:10px;
-      cursor:pointer;font-weight:600;box-shadow:0 6px 18px rgba(255,102,204,0.08);
-    }
-    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text);padding:8px 12px}
-
-    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:18px}
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border:1px solid rgba(255,255,255,0.03);
-      padding:18px;border-radius:12px;min-height:110px;
-      display:flex;align-items:center;justify-content:center;text-align:center;
-      transition:transform .22s ease, box-shadow .22s ease;
-    }
-    .card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(2,6,23,0.6)}
-    .card p{margin:0;font-size:16px;color:rgba(255,255,255,0.95);line-height:1.4}
-
-    .footer{margin:28px 0 60px;text-align:center;color:rgba(255,255,255,0.5);font-size:13px}
-
-    /* big hero quote */
-    .big-quote{
-      margin:20px auto 0;
-      background:#061226;
-      border-radius:14px;padding:18px;text-align:center;font-size:20px;
-      box-shadow:inset 0 1px 0 rgba(255,255,255,0.02);
-      border:1px solid rgba(255,255,255,0.03);
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background-color: black;
+      color: white;
+      overflow-x: hidden;
     }
 
-    @media(max-width:520px){
-      header h1{font-size:20px}
-      .left h2{font-size:18px}
+    section {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 50px;
+    }
+
+    .hero {
+      background: url('https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1950&q=80') center/cover no-repeat;
+      position: relative;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1;
+    }
+
+    .hero h1 {
+      position: relative;
+      z-index: 2;
+      font-family: 'Cinzel', serif;
+      font-size: 4rem;
+      background: linear-gradient(90deg, #ff0080, #ff8c00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    .hero p {
+      position: relative;
+      z-index: 2;
+      font-size: 1.3rem;
+      max-width: 800px;
+      color: #f2f2f2;
+      animation: fadeIn 3s ease-in-out;
+    }
+
+    .quote {
+      background: linear-gradient(180deg, #000000, #111111, #222222);
+    }
+
+    .quote h2 {
+      font-size: 2.5rem;
+      color: #ff8c00;
+      margin-bottom: 20px;
+    }
+
+    .quote p {
+      font-size: 1.4rem;
+      line-height: 1.8;
+      max-width: 700px;
+    }
+
+    .end {
+      background: linear-gradient(135deg, #1a1a1a, #000000, #4e4e4e);
+    }
+
+    .end h2 {
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, #ff0080, #ff8c00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .btn {
+      margin-top: 30px;
+      padding: 14px 40px;
+      border: none;
+      border-radius: 30px;
+      background: linear-gradient(90deg, #ff0080, #ff8c00);
+      color: white;
+      font-weight: bold;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: 0.4s;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #ff0080;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      font-size: 1rem;
+      color: #bfbfbf;
+      background-color: #0a0a0a;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Daily Dose — Motivation</h1>
-    <p>Short, powerful lines to keep the grind alive ✨</p>
-  </header>
 
-  <main class="container">
-    <section class="hero" aria-label="controls">
-      <div class="left">
-        <h2>One-line power. One click away.</h2>
-        <p>Tap “New Line” to change the big motivating quote. Use “Copy” to save and share.</p>
-      </div>
+  <section class="hero">
+    <h1>Wake Up & Conquer 🌅</h1>
+    <p>Every time you feel like quitting, remember why you started. You weren’t made to be average — you were born to shine, Afrin.</p>
+  </section>
 
-      <div class="controls" role="toolbar" aria-label="toolbar">
-        <button id="newBtn">New Line</button>
-        <button id="copyBtn" class="ghost">Copy</button>
-      </div>
-    </section>
+  <section class="quote">
+    <h2>🔥 The Power Inside You</h2>
+    <p>Real power is not about being loud — it’s about being unshakable when the world doubts you.  
+    Keep walking with silence and strength — your success will make the noise.</p>
+    <button class="btn" onclick="alert('You’re unstoppable, Afrin 💫')">Stay Strong →</button>
+  </section>
 
-    <div class="big-quote" id="bigQuote">Dreams don’t work unless you do.</div>
+  <section class="end">
+    <h2>👑 Your Era Begins Now</h2>
+    <p>Everything you’ve dreamed of is waiting — not tomorrow, not someday, but the moment you decide you deserve it.  
+    Step into your power, keep your crown high, and make every second your story.</p>
+  </section>
 
-    <div class="cards" id="cards">
-      <!-- cards will be filled by JavaScript -->
-    </div>
+  <footer>© 2025 Afrin Afsana | Designed with Fire & Focus 🔥</footer>
 
-    <div class="footer">Made with ❤️ — Keep pushing. Keep winning.</div>
-  </main>
-
-  <script>
-    const lines = [
-      "Dreams don’t work unless you do.",
-      "Be stronger than your excuses.",
-      "One day, your hard work will pay off.",
-      "Don’t stop until you’re proud.",
-      "You didn’t come this far just to give up.",
-      "Every queen was once a warrior in silence.",
-      "Discipline beats motivation every single day.",
-      "Keep going — the best is yet to come.",
-      "The world will know your name. Just not yet.",
-      "Focus. Fight. Finish.",
-      "Small steps every day. Massive results later.",
-      "Practice quietly. Let results scream.",
-      "Turn your setbacks into comebacks.",
-      "Hustle now. Shine later.",
-      "Your future self will thank you for today."
-    ];
-
-    const bigQuote = document.getElementById('bigQuote');
-    const cards = document.getElementById('cards');
-    const newBtn = document.getElementById('newBtn');
-    const copyBtn = document.getElementById('copyBtn');
-
-    function pickRandom(){
-      return lines[Math.floor(Math.random()*lines.length)];
-    }
-
-    function refreshBig(){
-      bigQuote.textContent = pickRandom();
-    }
-
-    function fillCards(){
-      cards.innerHTML = '';
-      for(let i=0;i<lines.length;i++){
-        const el = document.createElement('div');
-        el.className='card';
-        const p = document.createElement('p');
-        p.textContent = lines[i];
-        el.appendChild(p);
-        el.addEventListener('click', ()=>{
-          bigQuote.textContent = lines[i];
-        });
-        cards.appendChild(el);
-      }
-    }
-
-    newBtn.addEventListener('click', ()=>{
-      refreshBig();
-      newBtn.animate([{transform:'scale(1)'},{transform:'scale(0.96)'},{transform:'scale(1)'}],{duration:180});
-    });
-
-    copyBtn.addEventListener('click', ()=>{
-      const text = bigQuote.textContent;
-      if(navigator.clipboard){
-        navigator.clipboard.writeText(text).then(()=> {
-          copyBtn.textContent='Copied';
-          setTimeout(()=>copyBtn.textContent='Copy',1100);
-        });
-      } else {
-        // fallback
-        const ta = document.createElement('textarea');
-        ta.value = text; document.body.appendChild(ta); ta.select();
-        try{document.execCommand('copy'); copyBtn.textContent='Copied';}
-        catch(e){ alert('Copy failed'); }
-        ta.remove();
-        setTimeout(()=>copyBtn.textContent='Copy',1100);
-      }
-    });
-
-    // initialize
-    refreshBig();
-    fillCards();
-  </script>
 </body>
 </html>
