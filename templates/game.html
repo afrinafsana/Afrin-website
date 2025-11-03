@@ -242,4 +242,15 @@
     buildBoard();
   </script>
 </body>
-</html>
+<!-- Share button -->
+<button id="shareScoreBtn">Share Score</button>
+<script>
+  document.getElementById('shareScoreBtn').addEventListener('click', async () => {
+    const text = `I scored ${localStorage.getItem('bestScore') || 0} in Quick Tap — Try it: ${location.href}`;
+    if (navigator.share) {
+      navigator.share({ title: 'Play Quick Tap', text, url: location.href });
+    } else {
+      prompt('Copy & share this:', text);
+    }
+  });
+</script>
