@@ -1,20 +1,19 @@
 {
-  "name": "Puzzle Quest",
+  "name": "Mystery Puzzle",
   "short_name": "Puzzle",
-  "description": "A fun and mind-challenging puzzle game.",
-  "start_url": "/",
+  "description": "A mysterious and mind-challenging puzzle game that tests your logic and focus.",
+  "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#0d6efd",
-  "orientation": "portrait",
+  "background_color": "#000000",
+  "theme_color": "#7b2ff7",
   "icons": [
     {
-      "src": "/static/icon-192.png",
+      "src": "icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/static/icon-512.png",
+      "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
